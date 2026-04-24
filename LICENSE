@@ -1,0 +1,62 @@
+Simply-MCP License v1.0
+
+Copyright (c) 2025-2026 Clockwork Innovations, LLC
+Copyright (c) 2025-2026 Nicholas Marinkovich, MD
+
+TERMS AND CONDITIONS
+
+1. DEFINITIONS
+
+"Software" means the simply-mcp framework, including its source code,
+compiled output, documentation, and associated files.
+
+"Commercial Use" means any use of the Software that is primarily intended
+for or directed toward commercial advantage or monetary compensation.
+This includes, but is not limited to:
+  (a) Use in production systems that generate revenue;
+  (b) Use in Software-as-a-Service (SaaS) products;
+  (c) Use in internal tools or systems at for-profit organizations;
+  (d) Distribution as part of a commercial product or service.
+
+"Non-Commercial Use" means use of the Software for purposes that are not
+Commercial Use, including:
+  (a) Academic and scientific research;
+  (b) Personal, non-revenue-generating projects;
+  (c) Educational use, including coursework and teaching;
+  (d) Evaluation and testing of the Software;
+  (e) Non-profit organizational use.
+
+2. NON-COMMERCIAL LICENSE GRANT
+
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of this Software, to use, copy, modify, and distribute the
+Software for Non-Commercial Use, subject to the following conditions:
+
+  (a) This license notice and copyright notice shall be included in all
+      copies or substantial portions of the Software.
+  (b) Modified versions must be clearly marked as such and must not be
+      misrepresented as the original Software.
+
+3. COMMERCIAL USE
+
+Commercial Use of the Software requires a separate commercial license
+agreement with the Licensor. For commercial licensing inquiries, contact:
+
+  Email: licensing@cwinnov.com
+  Web:   https://cwinnov.com/simply-mcp/licensing
+
+4. CONTRIBUTIONS
+
+By submitting a contribution (pull request, patch, or other modification)
+to this project, you agree to license your contribution under the same
+terms as this license.
+
+5. DISCLAIMER
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

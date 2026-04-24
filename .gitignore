@@ -1,0 +1,26 @@
+node_modules/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+
+# Source and build artifacts must NOT be tracked — v5 source is private.
+src/
+dist/
+tsconfig.json
+tsconfig.production.json
+tsconfig*.tsbuildinfo
+
+.smcp-extract-*
+__temp_*
+__app_bundler_*
+.simplymcp-bun-*
+.simplymcp-wrapper-*.mjs
+.simplymcp-load-*/
+/simply-mcp
+/simply-mcp-*.tgz
+*.tgz

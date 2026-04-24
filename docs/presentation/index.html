@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simply MCP - Shareholder Presentation</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #root {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Gradient backgrounds */
+    .bg-gradient-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bg-gradient-dark {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+    }
+
+    .bg-gradient-blue {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0a0a0f 100%);
+    }
+
+    .bg-gradient-purple {
+      background: linear-gradient(135deg, #2d1b4e 0%, #0a0a0f 100%);
+    }
+
+    .bg-gradient-green {
+      background: linear-gradient(135deg, #1a3a2a 0%, #0a0a0f 100%);
+    }
+
+    .bg-gradient-orange {
+      background: linear-gradient(135deg, #3d2a1a 0%, #0a0a0f 100%);
+    }
+
+    /* Glow effects */
+    .glow-purple {
+      box-shadow: 0 0 60px rgba(102, 126, 234, 0.3);
+    }
+
+    .glow-text {
+      text-shadow: 0 0 40px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .animate-fade-in {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-delay-1 { animation-delay: 0.1s; }
+    .animate-delay-2 { animation-delay: 0.2s; }
+    .animate-delay-3 { animation-delay: 0.3s; }
+    .animate-delay-4 { animation-delay: 0.4s; }
+    .animate-delay-5 { animation-delay: 0.5s; }
+
+    /* Code blocks */
+    .code-block {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .code-keyword { color: #c792ea; }
+    .code-string { color: #c3e88d; }
+    .code-type { color: #82aaff; }
+    .code-comment { color: #546e7a; }
+    .code-function { color: #82aaff; }
+
+    /* Cards */
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(102, 126, 234, 0.5);
+      transform: translateY(-4px);
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+
+    /* Navigation */
+    .nav-dots {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dot:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-dot.active {
+      background: #667eea;
+      transform: scale(1.3);
+    }
+
+    /* Keyboard hint */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      opacity: 0.5;
+      font-size: 12px;
+    }
+
+    .key {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Metric cards */
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Architecture diagram */
+    .arch-layer {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .arch-arrow {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(180deg, #667eea, transparent);
+      margin: 10px auto;
+    }
+
+    /* Security badge */
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 100px;
+      font-size: 14px;
+      color: #22c55e;
+    }
+
+    /* Timeline */
+    .timeline-item {
+      position: relative;
+      padding-left: 30px;
+      padding-bottom: 30px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #667eea;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 24px;
+      width: 2px;
+      height: calc(100% - 16px);
+      background: rgba(102, 126, 234, 0.3);
+    }
+
+    .timeline-item:last-child::after {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    // Slide data
+    const slides = [
+      { id: 'title', bg: 'bg-gradient-dark' },
+      { id: 'problem', bg: 'bg-gradient-blue' },
+      { id: 'solution', bg: 'bg-gradient-purple' },
+      { id: 'interfaces', bg: 'bg-gradient-dark' },
+      { id: 'mcp-ui', bg: 'bg-gradient-blue' },
+      { id: 'progressive', bg: 'bg-gradient-purple' },
+      { id: 'code-execution', bg: 'bg-gradient-green' },
+      { id: 'agents', bg: 'bg-gradient-orange' },
+      { id: 'security', bg: 'bg-gradient-dark' },
+      { id: 'metrics', bg: 'bg-gradient-blue' },
+      { id: 'value', bg: 'bg-gradient-purple' },
+      { id: 'future', bg: 'bg-gradient-dark' },
+    ];
+
+    // Title Slide
+    function TitleSlide() {
+      return (
+        <div className="flex flex-col items-center justify-center h-full text-center px-8">
+          <div className="animate-fade-in opacity-0" style={{animationDelay: '0.1s'}}>
+            <div style={{fontSize: '120px', marginBottom: '20px'}}>&#9001;/&#9002;</div>
+          </div>
+          <h1 className="animate-fade-in opacity-0 glow-text" style={{
+            fontSize: '72px',
+            fontWeight: 800,
+            marginBottom: '24px',
+            animationDelay: '0.2s',
+            background: 'linear-gradient(135deg, #fff 0%, #667eea 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            Simply MCP
+          </h1>
+          <p className="animate-fade-in opacity-0" style={{
+            fontSize: '28px',
+            color: 'rgba(255,255,255,0.7)',
+            maxWidth: '800px',
+            lineHeight: 1.5,
+            animationDelay: '0.3s'
+          }}>
+            Type-Safe TypeScript Framework for Building MCP Servers
+          </p>
+          <p className="animate-fade-in opacity-0" style={{
+            fontSize: '20px',
+            color: 'rgba(255,255,255,0.5)',
+            marginTop: '40px',
+            animationDelay: '0.4s'
+          }}>
+            Interface-Driven API &bull; Zero Boilerplate &bull; Full Type Safety
+          </p>
+          <div className="animate-fade-in opacity-0" style={{
+            display: 'flex',
+            gap: '20px',
+            marginTop: '60px',
+            animationDelay: '0.5s'
+          }}>
+            <span className="security-badge">
+              <span>&#10003;</span> Production Ready
+            </span>
+            <span className="security-badge" style={{background: 'rgba(102,126,234,0.1)', borderColor: 'rgba(102,126,234,0.3)', color: '#667eea'}}>
+              <span>&#9733;</span> MIT Licensed
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // Problem Slide
+    function ProblemSlide() {
+      const problems = [
+        { icon: '&#128209;', title: 'Verbose Schema Definitions', desc: 'Manual JSON Schema for every tool parameter' },
+        { icon: '&#9881;', title: 'Protocol Boilerplate', desc: 'Repetitive handler registration and routing code' },
+        { icon: '&#9888;', title: 'No Type Safety', desc: 'Runtime errors from schema mismatches' },
+        { icon: '&#128336;', title: 'Slow Development', desc: 'Hours spent on infrastructure instead of features' },
+      ];
+
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{
+            fontSize: '48px',
+            fontWeight: 700,
+            marginBottom: '16px'
+          }}>
+            The Problem
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{
+            fontSize: '24px',
+            color: 'rgba(255,255,255,0.6)',
+            marginBottom: '60px',
+            animationDelay: '0.1s'
+          }}>
+            Traditional MCP server development is painful
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px'}}>
+            {problems.map((p, i) => (
+              <div key={i} className="feature-card animate-fade-in opacity-0" style={{animationDelay: `${0.2 + i * 0.1}s`}}>
+                <div style={{fontSize: '40px', marginBottom: '16px'}} dangerouslySetInnerHTML={{__html: p.icon}} />
+                <h3 style={{fontSize: '20px', fontWeight: 600, marginBottom: '8px', color: '#ef4444'}}>{p.title}</h3>
+                <p style={{color: 'rgba(255,255,255,0.6)'}}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Solution Slide
+    function SolutionSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            The Simply MCP Solution
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '40px', animationDelay: '0.1s'}}>
+            Define servers using pure TypeScript interfaces
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'start'}}>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.2s'}}>
+              <h3 style={{fontSize: '16px', fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '1px'}}>Define Your Tool</h3>
+              <div className="code-block">
+                <pre style={{lineHeight: 1.6}}>
+{`export const `}<span className="code-function">getWeather</span>{` = `}<span className="code-type">createTool</span>{`({
+  description: `}<span className="code-string">'Get current weather'</span>{`,
+  params: {
+    city: { type: `}<span className="code-string">'string'</span>{` },
+    units: {
+      type: `}<span className="code-string">'string'</span>{`,
+      enum: [`}<span className="code-string">'celsius'</span>{`, `}<span className="code-string">'fahrenheit'</span>{`],
+      optional: `}<span className="code-keyword">true</span>{`
+    }
+  },
+  handler: `}<span className="code-keyword">async</span>{` ({ city, units }) => {
+    `}<span className="code-keyword">const</span>{` data = `}<span className="code-keyword">await</span>{` fetchWeather(city);
+    `}<span className="code-keyword">return</span>{` {
+      temp: convert(data.temp, units),
+      conditions: data.conditions
+    };
+  }
+});`}
+                </pre>
+              </div>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+              <h3 style={{fontSize: '16px', fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '1px'}}>Create Server</h3>
+              <div className="code-block">
+                <pre style={{lineHeight: 1.6}}>
+{`export const `}<span className="code-function">server</span>{` = `}<span className="code-type">createServer</span>{`({
+  name: `}<span className="code-string">'weather-service'</span>{`,
+  version: `}<span className="code-string">'1.0.0'</span>{`,
+  description: `}<span className="code-string">'Weather API'</span>{`
+});`}
+                </pre>
+              </div>
+              <div style={{marginTop: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap'}}>
+                <span className="security-badge">&#10003; Full Type Safety</span>
+                <span className="security-badge">&#10003; Auto Schema Gen</span>
+                <span className="security-badge">&#10003; IntelliSense</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Interfaces Slide
+    function InterfacesSlide() {
+      const interfaces = [
+        { name: 'createTool()', desc: 'Define callable tools with typed params & results', color: '#667eea' },
+        { name: 'createResource()', desc: 'Expose data via URI-based resources', color: '#22c55e' },
+        { name: 'createPrompt()', desc: 'Create reusable prompt templates', color: '#f59e0b' },
+        { name: 'createApp()', desc: 'Rich UI components with tool integration', color: '#ec4899' },
+        { name: 'createAgent()', desc: 'Autonomous LLM-powered entities', color: '#06b6d4' },
+        { name: 'createServer()', desc: 'Server config, auth, transports', color: '#8b5cf6' },
+      ];
+
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Factory Functions
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Full type inference. Zero boilerplate. No decorators.
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px'}}>
+            {interfaces.map((iface, i) => (
+              <div key={i} className="feature-card animate-fade-in opacity-0" style={{animationDelay: `${0.2 + i * 0.08}s`}}>
+                <div style={{fontSize: '14px', fontWeight: 700, color: iface.color, marginBottom: '8px', fontFamily: 'SF Mono, monospace'}}>
+                  {iface.name}
+                </div>
+                <p style={{fontSize: '14px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.5}}>{iface.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="animate-fade-in opacity-0" style={{marginTop: '40px', textAlign: 'center', animationDelay: '0.7s'}}>
+            <p style={{fontSize: '18px', color: 'rgba(255,255,255,0.5)'}}>
+              AST-based extraction generates all protocol schemas automatically
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // MCP-UI Slide
+    function McpUiSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            MCP-UI: Secure Generated UI
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Return rich, interactive React components with tool results
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px'}}>
+            <div>
+              <div className="animate-fade-in opacity-0 code-block" style={{animationDelay: '0.2s', marginBottom: '20px'}}>
+                <pre style={{lineHeight: 1.6, fontSize: '13px'}}>
+{`// Define tool with createTool()
+const getStock = `}<span className="code-type">createTool</span>{`({
+  description: 'Get stock price',
+  handler: ({ ticker }) => ({ ticker, price: 150.25 })
+});
+
+`}<span className="code-comment">// Link to UI via IApp</span>{`
+const stockApp: `}<span className="code-type">IApp</span>{` = {
+  uri: 'ui://stock-card',
+  component: `}<span className="code-string">'./StockCard.tsx'</span>{`,
+  tools: [getStock]
+};`}
+                </pre>
+              </div>
+              <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+                <h4 style={{fontSize: '16px', fontWeight: 600, marginBottom: '16px', color: 'rgba(255,255,255,0.8)'}}>Three MIME Types</h4>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                    <span style={{width: '8px', height: '8px', borderRadius: '50%', background: '#667eea'}}></span>
+                    <span><strong>text/html</strong> - Inline HTML in sandboxed iframes</span>
+                  </div>
+                  <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                    <span style={{width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e'}}></span>
+                    <span><strong>text/uri-list</strong> - External HTTPS URLs</span>
+                  </div>
+                  <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                    <span style={{width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b'}}></span>
+                    <span><strong>Remote DOM</strong> - Web Worker isolation</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.4s'}}>
+              <h4 style={{fontSize: '16px', fontWeight: 600, marginBottom: '16px', color: 'rgba(255,255,255,0.8)'}}>Security Model</h4>
+              <div className="feature-card" style={{marginBottom: '16px'}}>
+                <div style={{display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px'}}>
+                  <span style={{fontSize: '24px'}}>&#128274;</span>
+                  <strong>Sandboxed Execution</strong>
+                </div>
+                <ul style={{paddingLeft: '20px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8}}>
+                  <li>Sandboxed iframes (allow-scripts only)</li>
+                  <li>No same-origin access</li>
+                  <li>Origin validation on postMessage</li>
+                  <li>HTTPS required in production</li>
+                </ul>
+              </div>
+              <div style={{display: 'flex', gap: '12px', flexWrap: 'wrap'}}>
+                <span className="security-badge">&#10003; Tailwind CSS v4</span>
+                <span className="security-badge">&#10003; React Components</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Progressive Disclosure Slide
+    function ProgressiveSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Progressive Disclosure
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Reduce token usage by 60-67% through intelligent capability hiding
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px'}}>
+            <div>
+              <div className="animate-fade-in opacity-0" style={{animationDelay: '0.2s'}}>
+                <h4 style={{fontSize: '18px', fontWeight: 600, marginBottom: '20px', color: '#ef4444'}}>Before: All 50 tools exposed</h4>
+                <div className="metric-card" style={{marginBottom: '30px'}}>
+                  <div className="metric-value" style={{background: 'linear-gradient(135deg, #ef4444, #dc2626)', WebkitBackgroundClip: 'text'}}>5,000</div>
+                  <div style={{color: 'rgba(255,255,255,0.5)', marginTop: '8px'}}>tokens per discovery</div>
+                </div>
+              </div>
+              <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+                <h4 style={{fontSize: '18px', fontWeight: 600, marginBottom: '20px', color: '#22c55e'}}>After: Smart disclosure</h4>
+                <div className="metric-card">
+                  <div className="metric-value">1,700</div>
+                  <div style={{color: 'rgba(255,255,255,0.5)', marginTop: '8px'}}>tokens (66% reduction)</div>
+                </div>
+              </div>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.4s'}}>
+              <h4 style={{fontSize: '18px', fontWeight: 600, marginBottom: '20px'}}>How It Works</h4>
+              <div className="code-block" style={{fontSize: '12px'}}>
+                <pre style={{lineHeight: 1.7}}>
+{`// Static hiding
+export const debugTool = createTool({
+  hidden: true, // Always hidden
+  handler: () => { ... }
+});
+
+// Dynamic hiding (role-based)
+export const adminTool = createTool({
+  hidden: (ctx) => ctx?.user?.role !== 'admin',
+  handler: () => { ... }
+});
+
+// Skill grouping with auto-docs
+export const dbSkill = createSkill({
+  tools: [queryTool, migrateTool, backupTool]
+});`}
+                </pre>
+              </div>
+              <div style={{marginTop: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap'}}>
+                <span className="security-badge">&#10003; Context-aware</span>
+                <span className="security-badge">&#10003; Compile-time validation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Code Execution Slide
+    function CodeExecutionSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Secure Code Execution
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            AI agents execute TypeScript safely with automatic tool injection
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '40px'}}>
+            {[
+              { tier: 'Tier 1', name: 'QuickJS', desc: 'WASM sandbox per execution', security: 'Software', speed: 'Ultra-fast', color: '#22c55e' },
+              { tier: 'Tier 2', name: 'Docker', desc: 'Ephemeral containers', security: 'Container', speed: 'Fast', color: '#667eea' },
+              { tier: 'Tier 3', name: 'Firecracker', desc: 'KVM MicroVMs', security: 'Hardware', speed: 'Secure', color: '#8b5cf6' },
+            ].map((tier, i) => (
+              <div key={i} className="feature-card animate-fade-in opacity-0" style={{animationDelay: `${0.2 + i * 0.1}s`, borderColor: `${tier.color}33`}}>
+                <div style={{fontSize: '12px', fontWeight: 700, color: tier.color, marginBottom: '4px'}}>{tier.tier}</div>
+                <div style={{fontSize: '20px', fontWeight: 700, marginBottom: '8px'}}>{tier.name}</div>
+                <p style={{fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '16px'}}>{tier.desc}</p>
+                <div style={{display: 'flex', gap: '8px'}}>
+                  <span style={{fontSize: '11px', padding: '4px 8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px'}}>{tier.security}</span>
+                  <span style={{fontSize: '11px', padding: '4px 8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px'}}>{tier.speed}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="animate-fade-in opacity-0" style={{animationDelay: '0.5s'}}>
+            <h4 style={{fontSize: '16px', fontWeight: 600, marginBottom: '16px'}}>Security Features</h4>
+            <div style={{display: 'flex', gap: '16px', flexWrap: 'wrap'}}>
+              {['128MB memory limit', 'Timeout enforcement', 'No Node.js builtins', 'Whitelist-based networking', 'SSRF prevention'].map((f, i) => (
+                <span key={i} className="security-badge">{f}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Agents Slide
+    function AgentsSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            IAgent: Autonomous AI Entities
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Build LLM-powered agents with identity, behavior, and workflow routing
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px'}}>
+            <div className="animate-fade-in opacity-0 code-block" style={{animationDelay: '0.2s'}}>
+              <pre style={{lineHeight: 1.6, fontSize: '12px'}}>
+{`export const `}<span className="code-function">securityAgent</span>{` = `}<span className="code-type">createAgent</span>{`({
+  name: `}<span className="code-string">'security_sentinel'</span>{`,
+  description: `}<span className="code-string">'Security review agent'</span>{`,
+  systemPrompt: \`You are a security expert...
+    Focus on OWASP Top 10.\`,
+
+  sampling: {
+    intelligencePriority: 7, `}<span className="code-comment">// Use Opus</span>{`
+    temperature: 0.3
+  },
+
+  tools: [`}<span className="code-string">'read_file'</span>{`, `}<span className="code-string">'grep_code'</span>{`],
+
+  workflows: [{
+    intent: `}<span className="code-string">'audit'</span>{`,
+    patterns: [`}<span className="code-string">'security review'</span>{`],
+    action: `}<span className="code-string">'workflows/audit.md'</span>{`
+  }]
+});`}
+              </pre>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+              <h4 style={{fontSize: '18px', fontWeight: 600, marginBottom: '20px'}}>Agent Capabilities</h4>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+                {[
+                  { icon: '&#129504;', title: 'Identity & Behavior', desc: 'System prompts define personality' },
+                  { icon: '&#128279;', title: 'Tool Access', desc: 'Reference skills, tools, resources' },
+                  { icon: '&#128736;', title: 'Workflow Routing', desc: 'Intent-based action dispatch' },
+                  { icon: '&#9889;', title: 'Model Selection', desc: 'Haiku to Opus via intelligencePriority' },
+                ].map((item, i) => (
+                  <div key={i} style={{display: 'flex', gap: '16px', alignItems: 'flex-start'}}>
+                    <span style={{fontSize: '24px'}} dangerouslySetInnerHTML={{__html: item.icon}} />
+                    <div>
+                      <div style={{fontWeight: 600, marginBottom: '4px'}}>{item.title}</div>
+                      <div style={{fontSize: '14px', color: 'rgba(255,255,255,0.6)'}}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{marginTop: '24px'}}>
+                <span className="security-badge" style={{background: 'rgba(102,126,234,0.1)', borderColor: 'rgba(102,126,234,0.3)', color: '#667eea'}}>
+                  No API key required - uses Claude subscription
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Security Slide
+    function SecuritySlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Enterprise Security
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Defense-in-depth across all layers
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px'}}>
+            {[
+              { title: 'Network Security', items: ['Whitelist-based access', 'SSRF prevention', 'IP blacklisting', 'HTTPS-only default'] },
+              { title: 'Execution Isolation', items: ['Separate V8 isolates', 'Memory limits (128MB)', 'CPU throttling', 'Timeout enforcement'] },
+              { title: 'UI Sandboxing', items: ['Sandboxed iframes', 'Origin validation', 'CSP enforcement', 'No same-origin access'] },
+              { title: 'Authentication', items: ['API key auth', 'OAuth 2.1 + PKCE', 'Scope-based access', 'Session management'] },
+            ].map((section, i) => (
+              <div key={i} className="feature-card animate-fade-in opacity-0" style={{animationDelay: `${0.2 + i * 0.1}s`}}>
+                <h4 style={{fontSize: '18px', fontWeight: 600, marginBottom: '16px', color: '#22c55e'}}>{section.title}</h4>
+                <ul style={{listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                  {section.items.map((item, j) => (
+                    <li key={j} style={{display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.7)'}}>
+                      <span style={{color: '#22c55e'}}>&#10003;</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Metrics Slide
+    function MetricsSlide() {
+      const metrics = [
+        { value: '66%', label: 'Token Reduction', sub: 'with progressive disclosure' },
+        { value: '<2s', label: 'Compilation', sub: '2.5-5x better than target' },
+        { value: '<2ms', label: 'Validation', sub: '50x better than target' },
+        { value: '940', label: 'Requests/sec', sub: 'batch processing throughput' },
+      ];
+
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Performance Metrics
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '60px', animationDelay: '0.1s'}}>
+            Built for production scale
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px'}}>
+            {metrics.map((m, i) => (
+              <div key={i} className="metric-card animate-fade-in opacity-0" style={{animationDelay: `${0.2 + i * 0.1}s`}}>
+                <div className="metric-value">{m.value}</div>
+                <div style={{fontSize: '18px', fontWeight: 600, marginTop: '12px'}}>{m.label}</div>
+                <div style={{fontSize: '14px', color: 'rgba(255,255,255,0.5)', marginTop: '4px'}}>{m.sub}</div>
+              </div>
+            ))}
+          </div>
+          <div className="animate-fade-in opacity-0" style={{marginTop: '50px', textAlign: 'center', animationDelay: '0.6s'}}>
+            <p style={{fontSize: '18px', color: 'rgba(255,255,255,0.6)'}}>
+              Zero runtime cost for type generation &bull; Lazy loading for optional dependencies
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // Value Slide
+    function ValueSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            Business Value
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Measurable impact at scale
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px'}}>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.2s'}}>
+              <h4 style={{fontSize: '20px', fontWeight: 600, marginBottom: '24px'}}>Cost Reduction Example</h4>
+              <div className="feature-card" style={{marginBottom: '20px'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '16px'}}>
+                  <span style={{color: 'rgba(255,255,255,0.6)'}}>Traditional (50 tools)</span>
+                  <span style={{fontWeight: 600, color: '#ef4444'}}>$1,500/mo</span>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '16px'}}>
+                  <span style={{color: 'rgba(255,255,255,0.6)'}}>With Progressive Disclosure</span>
+                  <span style={{fontWeight: 600, color: '#22c55e'}}>$510/mo</span>
+                </div>
+                <div style={{borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between'}}>
+                  <span style={{fontWeight: 600}}>Monthly Savings</span>
+                  <span style={{fontWeight: 700, fontSize: '24px', color: '#22c55e'}}>$990</span>
+                </div>
+              </div>
+              <p style={{fontSize: '14px', color: 'rgba(255,255,255,0.5)'}}>
+                Based on 100,000 users/month at $0.003/1K tokens
+              </p>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+              <h4 style={{fontSize: '20px', fontWeight: 600, marginBottom: '24px'}}>Key Benefits</h4>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+                {[
+                  { icon: '&#128176;', title: 'Lower API Costs', desc: '60-67% fewer tokens per interaction' },
+                  { icon: '&#9889;', title: 'Faster Development', desc: 'Hours of boilerplate eliminated' },
+                  { icon: '&#128274;', title: 'Enterprise Security', desc: 'Multi-tier isolation, OAuth 2.1' },
+                  { icon: '&#128640;', title: 'Scale Ready', desc: '940 req/sec batch throughput' },
+                ].map((item, i) => (
+                  <div key={i} style={{display: 'flex', gap: '16px', alignItems: 'flex-start'}}>
+                    <span style={{fontSize: '28px'}} dangerouslySetInnerHTML={{__html: item.icon}} />
+                    <div>
+                      <div style={{fontWeight: 600}}>{item.title}</div>
+                      <div style={{fontSize: '14px', color: 'rgba(255,255,255,0.6)'}}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Future Slide
+    function FutureSlide() {
+      return (
+        <div className="flex flex-col justify-center h-full px-16">
+          <h2 className="animate-fade-in opacity-0" style={{fontSize: '48px', fontWeight: 700, marginBottom: '16px'}}>
+            The Road Ahead
+          </h2>
+          <p className="animate-fade-in opacity-0" style={{fontSize: '24px', color: 'rgba(255,255,255,0.6)', marginBottom: '50px', animationDelay: '0.1s'}}>
+            Continuous innovation in AI infrastructure
+          </p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px'}}>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.2s'}}>
+              <h4 style={{fontSize: '20px', fontWeight: 600, marginBottom: '24px'}}>Platform Vision</h4>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                {[
+                  { phase: 'Now', items: ['IAgent v4.8.0', 'Full MCP-UI', 'Progressive Disclosure'] },
+                  { phase: 'Next', items: ['Agent Marketplace', 'Multi-agent workflows', 'Enhanced observability'] },
+                  { phase: 'Future', items: ['Federated agents', 'Cross-platform sync', 'Edge deployment'] },
+                ].map((p, i) => (
+                  <div key={i} className="timeline-item">
+                    <div style={{fontWeight: 700, color: '#667eea', marginBottom: '8px'}}>{p.phase}</div>
+                    <ul style={{listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '4px'}}>
+                      {p.items.map((item, j) => (
+                        <li key={j} style={{color: 'rgba(255,255,255,0.7)', fontSize: '14px'}}>&#8226; {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="animate-fade-in opacity-0" style={{animationDelay: '0.3s'}}>
+              <h4 style={{fontSize: '20px', fontWeight: 600, marginBottom: '24px'}}>Get Started</h4>
+              <div className="code-block" style={{marginBottom: '24px'}}>
+                <pre>npm install simply-mcp</pre>
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
+                <a href="https://github.com/Clockwork-Innovations/simply-mcp-ts" style={{color: '#667eea', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                  &#128279; GitHub Repository
+                </a>
+                <a href="https://www.npmjs.com/package/simply-mcp" style={{color: '#667eea', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                  &#128230; NPM Package
+                </a>
+              </div>
+              <div style={{marginTop: '40px', padding: '24px', background: 'linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2))', borderRadius: '16px', border: '1px solid rgba(102,126,234,0.3)'}}>
+                <div style={{fontSize: '24px', fontWeight: 700, marginBottom: '8px'}}>Thank You</div>
+                <div style={{color: 'rgba(255,255,255,0.7)'}}>Questions?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Main Presentation Component
+    function Presentation() {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [isTransitioning, setIsTransitioning] = useState(false);
+
+      const goToSlide = useCallback((index) => {
+        if (index >= 0 && index < slides.length && !isTransitioning) {
+          setIsTransitioning(true);
+          setCurrentSlide(index);
+          setTimeout(() => setIsTransitioning(false), 500);
+        }
+      }, [isTransitioning]);
+
+      const nextSlide = useCallback(() => goToSlide(currentSlide + 1), [currentSlide, goToSlide]);
+      const prevSlide = useCallback(() => goToSlide(currentSlide - 1), [currentSlide, goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            nextSlide();
+          } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+            e.preventDefault();
+            prevSlide();
+          } else if (e.key >= '1' && e.key <= '9') {
+            goToSlide(parseInt(e.key) - 1);
+          } else if (e.key === '0') {
+            goToSlide(9);
+          }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide, goToSlide]);
+
+      const slideComponents = {
+        'title': TitleSlide,
+        'problem': ProblemSlide,
+        'solution': SolutionSlide,
+        'interfaces': InterfacesSlide,
+        'mcp-ui': McpUiSlide,
+        'progressive': ProgressiveSlide,
+        'code-execution': CodeExecutionSlide,
+        'agents': AgentsSlide,
+        'security': SecuritySlide,
+        'metrics': MetricsSlide,
+        'value': ValueSlide,
+        'future': FutureSlide,
+      };
+
+      const CurrentSlideComponent = slideComponents[slides[currentSlide].id];
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+
+      return (
+        <div style={{width: '100vw', height: '100vh', position: 'relative'}}>
+          {/* Progress bar */}
+          <div className="progress-bar" style={{width: `${progress}%`}} />
+
+          {/* Slide content */}
+          <div
+            key={currentSlide}
+            className={slides[currentSlide].bg}
+            style={{
+              width: '100%',
+              height: '100%',
+              transition: 'opacity 0.5s ease',
+              opacity: isTransitioning ? 0.5 : 1
+            }}
+          >
+            <CurrentSlideComponent />
+          </div>
+
+          {/* Navigation dots */}
+          <div className="nav-dots">
+            {slides.map((_, i) => (
+              <div
+                key={i}
+                className={`nav-dot ${i === currentSlide ? 'active' : ''}`}
+                onClick={() => goToSlide(i)}
+              />
+            ))}
+          </div>
+
+          {/* Keyboard hint */}
+          <div className="keyboard-hint">
+            <span className="key">&#8592;</span>
+            <span className="key">&#8594;</span>
+            <span style={{marginLeft: '8px'}}>Navigate</span>
+          </div>
+
+          {/* Slide counter */}
+          <div style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '30px',
+            fontSize: '14px',
+            color: 'rgba(255,255,255,0.4)'
+          }}>
+            {currentSlide + 1} / {slides.length}
+          </div>
+        </div>
+      );
+    }
+
+    // Render
+    ReactDOM.createRoot(document.getElementById('root')).render(<Presentation />);
+  </script>
+</body>
+</html>

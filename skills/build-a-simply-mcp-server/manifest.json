@@ -1,0 +1,23 @@
+{
+  "skill": [
+    "SKILL.md",
+    "references/cli.md",
+    "references/auth.md",
+    "references/mcp-apps.md",
+    "references/skills-vfs.md",
+    "references/code-execution.md",
+    "references/python-handlers.md",
+    "references/test-harness.md",
+    "references/agent-sdk-testing.md",
+    "references/claude-code-desc-truncation.md"
+  ],
+  "examples": [
+    "examples/minimal.ts",
+    "examples/complete.ts",
+    "examples/skill-playground.ts",
+    "examples/code-execution.ts",
+    "examples/oauth-oidc.ts",
+    "examples/python-handlers.ts",
+    "examples/oversized-description.ts"
+  ]
+}

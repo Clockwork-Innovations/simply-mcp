@@ -1,0 +1,33 @@
+{
+  "name": "simply-mcp",
+  "version": "5.0.0-rc.1",
+  "description": "Type-safe TypeScript framework for building Model Context Protocol (MCP) servers with pure interface-driven API",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "Nicholas Marinkovich, MD",
+    "url": "https://cwinnov.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clockwork-Innovations/simply-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Clockwork-Innovations/simply-mcp/issues"
+  },
+  "homepage": "https://github.com/Clockwork-Innovations/simply-mcp#readme",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "llm",
+    "typescript",
+    "server",
+    "framework",
+    "anthropic",
+    "claude"
+  ],
+  "engines": {
+    "node": ">=22.0.0",
+    "bun": ">=1.1.0"
+  }
+}
