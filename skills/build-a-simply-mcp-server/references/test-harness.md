@@ -46,12 +46,17 @@ tests/harness/
 
 ### Step 0: Ensure simply-mcp is resolvable
 
-MCP server files `import { createTool } from 'simply-mcp'`. Install it so harness scripts that do a direct `import()` can resolve it:
+MCP server files `import { createTool } from 'simply-mcp'` — but this package is resolved by the simply-mcp CLI at runtime, not installed via npm. For harness scripts that do a direct `import()`, you need a symlink:
 
 ```bash
-npm install simply-mcp
-# or: pnpm add simply-mcp
+# Check if it already exists
+ls <project>/node_modules/simply-mcp 2>/dev/null
+
+# If not, create it (points to local dev build)
+ln -s /home/rifampin/cs-projects/packages/simply-mcp-ts-dev <project>/node_modules/simply-mcp
 ```
+
+This is a live filesystem symlink — no caching, no staleness. Rebuilds of simply-mcp are picked up immediately.
 
 ### Step 1: Identify all tool handlers and their HTTP dependencies
 
@@ -210,7 +215,7 @@ For each tool, cover:
 
 | Issue | Fix |
 |-------|-----|
-| `Cannot find package 'simply-mcp'` | MCP server files import from `'simply-mcp'` but it's resolved by the simply-mcp CLI at runtime. Install it in the harness project: `npm install simply-mcp`. |
+| `Cannot find package 'simply-mcp'` | MCP server files import from `'simply-mcp'` but it's resolved by the simply-mcp CLI at runtime. Create a symlink: `ln -s /home/rifampin/cs-projects/packages/simply-mcp-ts-dev <project>/node_modules/simply-mcp`. Live symlink — no caching. |
 | Env vars not picked up | Use dynamic `import()` after setting `process.env`, not static `import` at top |
 | Module cached with wrong env | Each `bun test` file runs in separate process — no cross-file issue. For harness scripts, set env before any import |
 | Mock server port conflict | Use `port: 0` for auto-assignment |
@@ -530,7 +535,7 @@ For servers with `codeExecutionOnly: true`, the MCP layer exposes a single `code
 ```typescript
 // Via protocol (spawned server)
 const result = await client.callTool('code_executor', {
-  code: 'get_context()',
+  code: 'newsroom_get_context()',
 });
 const text = result.result?.content?.[0]?.text;
 assert(text.includes('context'), 'Should return context');
@@ -538,8 +543,8 @@ assert(text.includes('context'), 'Should return context');
 // Multi-tool composition
 const composed = await client.callTool('code_executor', {
   code: `
-    const sources = list_sources();
-    const context = get_context();
+    const sources = newsroom_list_sources();
+    const context = newsroom_get_context();
     return { sourceCount: sources.length, hasContext: !!context.context };
   `,
 });
@@ -575,4 +580,6 @@ depServer.stop();
 
 ## Working Examples
 
-See `examples/` in this repository for end-to-end simply-mcp server patterns that this harness approach tests.
+| Harness | Location | Tools Tested |
+|---------|----------|-------------|
+| Newsroom tools | `clockwork-create-sdk/backend-ts/tests/harness/newsroom-tools-harness.ts` | 13 tools, 26 tests — source analysis, article/editor, entity extraction, error handling |

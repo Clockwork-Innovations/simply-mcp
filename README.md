@@ -10,18 +10,32 @@
 [![License](https://img.shields.io/badge/License-Simply--MCP-blue.svg)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 [![Node Version](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen.svg)](https://nodejs.org/)
+[![MCP Compliance](https://img.shields.io/badge/MCP-Tier_1_Compatible-success.svg)](./COMPLIANCE.md)
+
+---
+
+## Tier 1 Compatible Framework
+
+Simply-MCP is a **Tier 1 Compatible Community Framework**, providing 100% coverage of the Model Context Protocol specification (2025-11-25) and all active Standards Track SEPs.
+
+- **SEP-1865 (MCP Apps)**: Native support for rich, interactive UIs.
+- **SEP-1036 (URL Elicitation)**: Secure out-of-band user interaction.
+- **SEP-1577 (Sampling)**: Advanced LLM sampling with tool-use and context support.
+- **SEP-2339 (Tasks)**: Durable, asynchronous background operations.
+
+View the full [Compliance Report](./COMPLIANCE.md).
 
 ---
 
 ## What You Can Build
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/clockwork-innovations/simply-mcp/main/resources/assets/gallery/system-monitor.png" width="45%" alt="System Monitor">
-  <img src="https://raw.githubusercontent.com/clockwork-innovations/simply-mcp/main/resources/assets/gallery/map.png" width="45%" alt="Interactive Map">
+  <img src="https://raw.githubusercontent.com/Rifampin/simply-mcp/main/docs/assets/gallery/system-monitor.png" width="45%" alt="System Monitor">
+  <img src="https://raw.githubusercontent.com/Rifampin/simply-mcp/main/docs/assets/gallery/map.png" width="45%" alt="Interactive Map">
 </div>
 <div align="center">
-  <img src="https://raw.githubusercontent.com/clockwork-innovations/simply-mcp/main/resources/assets/gallery/scenario-modeler.png" width="45%" alt="SaaS Scenario Modeler">
-  <img src="https://raw.githubusercontent.com/clockwork-innovations/simply-mcp/main/resources/assets/gallery/budget-allocator.png" width="45%" alt="Budget Allocator">
+  <img src="https://raw.githubusercontent.com/Rifampin/simply-mcp/main/docs/assets/gallery/scenario-modeler.png" width="45%" alt="SaaS Scenario Modeler">
+  <img src="https://raw.githubusercontent.com/Rifampin/simply-mcp/main/docs/assets/gallery/budget-allocator.png" width="45%" alt="Budget Allocator">
 </div>
 
 <p align="center">
@@ -77,6 +91,28 @@ Both paths produce the same thing: a type-safe MCP server with tools, resources,
 ```bash
 npm install simply-mcp
 ```
+
+The bare install pulls only the core MCP runtime (SDK, `zod`, `yargs`,
+MCP Apps). Opt-in features are declared as **optional peer
+dependencies** — install only the ones your server uses:
+
+| Feature you use | Add |
+|---|---|
+| HTTP transport | `npm install hono @hono/node-server` |
+| WebSocket transport | `npm install ws` |
+| `.ts` server entries via the CLI | `npm install esbuild tsx` |
+| Interface API (decorators / `IServer`) | `npm install typescript` |
+| OAuth (bcrypt hashing) | `npm install bcrypt` |
+| OAuth (Redis storage) | `npm install ioredis` |
+| MCP Apps with React UI | `npm install @babel/standalone @remote-dom/core @remote-dom/react` |
+| UI minification (production) | `npm install postcss cssnano html-minifier-terser terser` |
+| HTML input sanitization | `npm install dompurify` |
+| Code execution sandbox | `npm install quickjs-emscripten` |
+| File-watch dev mode | `npm install chokidar` |
+| Resource SQLite backend | `npm install better-sqlite3` |
+| Express-router OAuth | `npm install express` |
+
+Missing-peer errors point at the exact package to install.
 
 ---
 
@@ -157,16 +193,15 @@ npx simplymcp bundle server.ts           # Bundle for production
 | Guide | Description |
 |-------|-------------|
 | [Quick Start](./docs/QUICK_START.md) | Get running in 5 minutes |
+| [AI Workflow](./docs/AI_WORKFLOW.md) | Building servers with AI assistance |
+| [API Reference](./docs/API_REFERENCE.md) | createServer, createTool, createResource, createApp |
 | [CLI](./docs/CLI.md) | Full command reference |
 | [Transport](./docs/TRANSPORT.md) | stdio, HTTP, WebSocket modes |
-| [Code Execution](./docs/advanced/CODE_EXECUTION.md) | QuickJS sandbox for tool chaining |
-| [OAuth2](./docs/advanced/OAUTH2.md) | Authentication setup |
-| [MCP Apps](./docs/advanced/MCP_APPS.md) | Rich UI components |
-| [UI Components](./docs/UI_COMPONENTS.md) | Building tool UIs |
-| [Typed Tool Results](./docs/TYPED_TOOL_RESULTS.md) | `structuredContent` + `outputSchema` contract |
+| [Code Execution](./docs/CODE_EXECUTION.md) | QuickJS sandbox for tool chaining |
+| [Typed Tool Results](./docs/TYPED_TOOL_RESULTS.md) | Canonical `structuredContent` + `outputSchema` parsing contract |
 | [Bundling](./docs/BUNDLING.md) | Production deployment |
-| [Testing](./docs/TESTING.md) | Test harness patterns |
-| [SDK Upgrade](./docs/SDK-UPGRADE.md) | Version migration notes |
+| [Examples](./docs/EXAMPLES.md) | Annotated example index |
+| [FAQ](./docs/FAQ.md) | Common questions |
 
 ---
 
@@ -180,17 +215,6 @@ npx simplymcp bundle server.ts           # Bundle for production
 
 ---
 
-## Contributing
-
-Found a bug, have a feature request, or want to propose a change? Please open a [GitHub Issue](https://github.com/clockwork-innovations/simply-mcp/issues/new/choose) — the source is not distributed from this repository, so issues are the way to contribute.
-
-When filing an issue, include:
-- **For bugs:** a minimal reproduction, the simply-mcp version, and Node/Bun version
-- **For feature requests:** the use case and what you've tried
-- **For questions:** check [docs/](./docs) and existing issues first
-
----
-
 ## License
 
 Simply-MCP is free for non-commercial use (research, personal projects, education, evaluation). Commercial use requires a separate license. See [LICENSE](./LICENSE) for details.
@@ -199,6 +223,6 @@ For commercial licensing: [licensing@cwinnov.com](mailto:licensing@cwinnov.com)
 
 ---
 
-[NPM](https://www.npmjs.com/package/simply-mcp) · [GitHub](https://github.com/clockwork-innovations/simply-mcp) · [Issues](https://github.com/clockwork-innovations/simply-mcp/issues)
+[NPM](https://www.npmjs.com/package/simply-mcp) · [GitHub](https://github.com/Rifampin/simply-mcp) · [Issues](https://github.com/Rifampin/simply-mcp/issues)
 
 Built with the [Model Context Protocol SDK](https://github.com/modelcontextprotocol/sdk) by Anthropic.

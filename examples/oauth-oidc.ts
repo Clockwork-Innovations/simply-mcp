@@ -11,7 +11,7 @@
  * - Set GOOGLE_CLIENT_ID environment variable
  */
 
-import { createServer, createTool, createRouter } from 'simply-mcp';
+import { createServer, createTool, createRouter } from '../src/index.js';
 
 // Server with OIDC authentication (resource server only)
 export const server = createServer({

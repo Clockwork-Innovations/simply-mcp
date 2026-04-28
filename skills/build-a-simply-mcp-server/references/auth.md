@@ -111,7 +111,10 @@ export const server = createServer({
   sanitizeDescriptions: true,  // default: true
 
   // Tool output sanitization — strips injection tags from results (OWASP MCP06)
-  sanitizeOutput: true,        // default: true
+  // OPT-IN: legit markdown/transcripts/security-research output contain these
+  // tokens and would be silently mangled. Enable only when untrusted tool output
+  // flows back into an LLM.
+  sanitizeOutput: false,       // default: false
 
   // Schema integrity — SHA-256 pins tool schemas at registration (OWASP MCP03)
   // Detects rug pull attacks (tool definitions changing after approval)
@@ -134,7 +137,7 @@ export const server = createServer({
 |--------|-----------|---------|--------|
 | `host` | MCP07 | `'127.0.0.1'` | HTTP server bind address — localhost only by default |
 | `sanitizeDescriptions` | MCP03 | `true` | Strips prompt injection tags from tool descriptions before they reach the LLM |
-| `sanitizeOutput` | MCP06 | `true` | Strips injection patterns from tool return values before client receives them |
+| `sanitizeOutput` | MCP06 | `false` | Opt-in. Strips injection patterns (`<IMPORTANT>`, `<\|im_start\|>`, `<system>`) from tool return values. Off by default because it mangles legitimate markdown/transcript/security-research payloads — enable only when untrusted output is fed back into an LLM |
 | `schemaIntegrity` | MCP03 | `true` | SHA-256 hashes tool schemas at registration; detects mutations |
 | `secretScanning` | MCP01 | `false` | Scans tool output and error messages for credential patterns, redacts them |
 | `sessionBinding` | MCP07 | `true` | Binds sessions to IP+User-Agent; rejects hijacked sessions |
@@ -168,7 +171,7 @@ Security events are logged when auth is configured:
 ### Production Checklist
 
 - [ ] Set `auth` (API key or OAuth) — never deploy without authentication
-- [ ] Keep `sanitizeOutput: true` and `sanitizeDescriptions: true` (defaults)
+- [ ] Keep `sanitizeDescriptions: true` (default). Set `sanitizeOutput: true` only if untrusted tool output is fed back into an LLM — it will mangle markdown/transcripts that legitimately contain `<IMPORTANT>`/`<|im_start|>`/`<system>` tokens.
 - [ ] Keep `host: '127.0.0.1'` unless you need external access
 - [ ] Enable `secretScanning: true` if tools process credentials
 - [ ] Use `requiredScopes` on sensitive tools

@@ -14,7 +14,7 @@
  * Lint: npx simplymcp lint examples/code-execution.ts
  */
 
-import { createServer, createTool } from 'simply-mcp';
+import { createServer, createTool } from '../src/index.js';
 
 // ============================================================================
 // SERVER WITH CODE EXECUTION

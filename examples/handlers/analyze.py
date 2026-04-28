@@ -1,10 +1,14 @@
-# analyze.py - Example Python handler for Simply-MCP
+# analyze.py — example Python handler for Simply-MCP.
 #
-# ARGS: dict containing tool parameters (from JSON)
-# RETURN(value): function to return result (will be JSON serialized)
+# Globals injected by the bridge:
+#   ARGS         dict of tool parameters (Buffer/Uint8Array values arrive as bytes)
+#   RETURN(v)    return a JSON-serializable value; ends the run
+#   RETURN_BYTES(b)
+#                return raw bytes (b: bytes/bytearray/memoryview); ends the run
 #
-# This script is called by the PythonHandlerResolver when a tool
-# with handler: { type: 'python', script: './handlers/analyze.py' } is invoked.
+# Raise any Python exception to surface a structured PythonHandlerError on
+# the TS side — the type, message, traceback, and optional `.payload`
+# attribute are preserved.
 
 data = ARGS.get("data", [])
 algorithm = ARGS.get("algorithm", "basic")

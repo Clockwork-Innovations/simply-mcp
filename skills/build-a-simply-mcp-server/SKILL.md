@@ -121,7 +121,7 @@ createServer({
   stateful,
 
   // Code execution (references/code-execution.md)
-  codeExecution: { timeout, introspectTools, captureOutput, embedInstructionsInDescription, resultFormatter, descriptionSuffix, enableSandboxFilter, onSandboxToolsChanged },
+  codeExecution: { timeout, introspectTools, captureOutput, embedInstructionsInDescription, resultFormatter, descriptionSuffix, enableSandboxFilter, onSandboxToolsChanged, memoryLimitMB },
   codeExecutionOnly,
 
   // Token optimization
@@ -131,7 +131,7 @@ createServer({
 
   // Security (OWASP MCP Top 10 — secure defaults)
   host,                                // default '127.0.0.1'
-  sanitizeOutput,                      // default true
+  sanitizeOutput,                      // default false (opt-in; mangles legit `<IMPORTANT>`/`<|im_start|>`/`<system>` in markdown/transcripts)
   sanitizeDescriptions,                // default true
   schemaIntegrity,                     // SHA-256 pin schemas, default true
   secretScanning,                      // default false
@@ -144,10 +144,6 @@ createServer({
   flattenRouters,
   minimalRouterDisclosure,
   hideRouterSubtools,
-
-  // Lifecycle
-  processIdleTimeout,                  // ms
-  processMemoryLimitMB,
 
   // Auth (references/auth.md)
   auth: { type: 'apiKey' | 'oauth' | 'oidc', ... },

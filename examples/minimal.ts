@@ -6,7 +6,7 @@
  * Lint: npx simplymcp lint examples/minimal.ts
  */
 
-import { createServer, createTool } from 'simply-mcp';
+import { createServer, createTool } from '../src/index.js';
 
 // Server configuration using createServer()
 export const server = createServer({

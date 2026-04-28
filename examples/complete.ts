@@ -24,7 +24,7 @@ import {
   createApp,
   createRouter,
   createCompletion,
-} from 'simply-mcp';
+} from '../src/index.js';
 
 // ============================================================================
 // SERVER CONFIGURATION

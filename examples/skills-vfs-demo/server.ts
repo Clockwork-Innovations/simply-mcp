@@ -14,7 +14,7 @@ import {
   createTool,
   createSkill,
   createResource,
-} from 'simply-mcp';
+} from '../../src/index.js';
 
 // Skill-member tools: `skill:` membership auto-hides from `tools/list`,
 // so the agent discovers them via SKILL.md documentation and invokes

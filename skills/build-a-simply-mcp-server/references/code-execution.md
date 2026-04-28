@@ -4,6 +4,21 @@
 
 Code execution uses a QuickJS WebAssembly sandbox. It works on Node.js, Bun, and Cloudflare Workers — no containers or external services needed.
 
+The QuickJS runtime is created fresh per `code_executor` call and disposed when the call returns — there is no shared heap across calls. Treat the script as a per-call staging ground: chain tool calls, transform results, return a value; then the runtime dies.
+
+### memoryLimitMB
+
+Per-call heap cap (default `512` MB). It is a host-OOM **failsafe**, not a security boundary — sized to never trip on legitimate work (page dumps, screenshots, JSON parses) while still aborting a runaway `while(true) arr.push(...)` before the host gets SIGKILL'd.
+
+```typescript
+codeExecution: {
+  timeout: 60000,
+  memoryLimitMB: 256,   // dial down for untrusted-script hosting
+}
+```
+
+Set lower for multi-tenant / untrusted-script deployments. Keep the default for trusted local MCPs (browser automation, dev tools) — script working sets routinely exceed 128 MB when round-tripping page content. The cap is per-call: prior calls' allocations don't count against the next one.
+
 ## Code Execution Pattern
 
 For servers where AI composes multiple tool calls into one JS request:
